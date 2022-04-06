@@ -8,11 +8,26 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-    <header>
+    <header id = "startScreen" class="startScreen">
         <h1>Code Quiz</h1>
+        <p>Click Start Game to begin!</p>
+        <button id = "startBtn">Start Quiz</button>
 
     </header>
-    <main></main>
+    <main>
+        <div id = "questionContainer" class = "hide">
+            <h2 id = "questionText"></h2>
+            <div id = "choices" class = "choices" ></div>
+        </div>
+        <div id = "endContainer" class = "hide">
+            <h2> Game Over </h2>
+            <p>Your final score is: <span id = "finalScore"></span></p>
+            <p>
+                Enter Initials: <input id = "initials" type="text" max="3"/>
+            </p>
+            <button id = "submit">Submit</button>
+        </div>
+    </main>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
