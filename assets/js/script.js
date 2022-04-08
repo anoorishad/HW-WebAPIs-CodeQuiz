@@ -6,7 +6,10 @@ var choicesElement = document.getElementById("choices");
 var submitBtn = document.getElementById("submit");
 var startBtn = document.getElementById("startBtn");
 var initialsElement = document.getElementById("initials");
+var endScreen = document.getElementById("endContainer");
 
+var timerID;
+var timeLeft = document.getElementById("timeLeft");
 
 // array containing question objects with choices and appropriate answers
 var questions = [
@@ -51,13 +54,23 @@ var questions = [
         answer:  "optionB"
     }
 ];
-
+var time = questions.length * 15
 
 function strtQuiz() {
     var startScreenElement = document.getElementById("startScreen");
     startScreenElement.setAttribute("class","hide");
     questionContainer.removeAttribute("class");
+    timerID = setInterval(clock, 1000);
+    timeLeft.textContent = time
+
     getQuestion();
+}
+function clock() {
+    time--;
+    timeLeft.textContent = time;
+    if (time <= 0) {
+        endQuiz();
+    };
 }
 
 function getQuestion() {
@@ -66,26 +79,60 @@ function getQuestion() {
     var questionTitle = document.getElementById("questionText");
     questionTitle.textContent = currentQuestion.title;
     choicesElement.innerHTML = "";
-    currentQuestion.choices.forEach(function(choice, i) {
+    currentQuestion.choices.forEach(function(choiceP, i) {
         var choiceBtn = document.createElement("button");
         choiceBtn.setAttribute("class", "choice");
-        choiceBtn.setAttribute("value", choice);
-        choiceBtn.textContent = i + 1 + ". " + choice;
+        choiceBtn.setAttribute("value", choiceP);
+        choiceBtn.textContent = i + 1 + ". " + choiceP;
         choiceBtn.onclick = nextQuestionClick;
         choicesElement.appendChild(choiceBtn);
+        // console.log(currentQuestion.answer)
+        // console.log(choice)
+        // if else statement for right or wrong answer
 
     });
 }
 
 function nextQuestionClick () {
+    // console.log(e.target.getAttribute("data-attribute"))
+    // if (currentQuestion.answer === choice) {
+    //     choiceBtn.setAttribute("data-attribute", "true");
+    // } 
+    // else {
+    //     choiceBtn.setAttribute("data-attribute", "false");
+    // }
+    if (this.value !== questions[currentQuestionIndex].answer) {
+        time -= 10;
+        if (time < 0) {
+            time=0
+        }
+        timeLeft.textContent = time
+    }
+
     currentQuestionIndex++
+    if (currentQuestionIndex === questions.length) {
+        console.log("WE made it here");
+        endQuiz();
+    }
+    else {
+        getQuestion();
+    }
+
 }
 
+function endQuiz () {
+    clearInterval(timerID);
+    endScreen.removeAttribute("class")
+    questionContainer.setAttribute("class","hide")
 
-// if else statement for right or wrong
-
-
-
+}
 
 // starts quiz when start quiz button is pressed
 startBtn.addEventListener("click", strtQuiz);
+
+
+
+
+
+
+
