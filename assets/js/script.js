@@ -7,6 +7,7 @@ var submitBtn = document.getElementById("submit");
 var startBtn = document.getElementById("startBtn");
 var initialsElement = document.getElementById("initials");
 var endScreen = document.getElementById("endContainer");
+var totalPoints = 0
 
 var timerID;
 var timeLeft = document.getElementById("timeLeft");
@@ -86,27 +87,22 @@ function getQuestion() {
         choiceBtn.textContent = i + 1 + ". " + choiceP;
         choiceBtn.onclick = nextQuestionClick;
         choicesElement.appendChild(choiceBtn);
-        // console.log(currentQuestion.answer)
-        // console.log(choice)
-        // if else statement for right or wrong answer
 
     });
 }
 
 function nextQuestionClick () {
-    // console.log(e.target.getAttribute("data-attribute"))
-    // if (currentQuestion.answer === choice) {
-    //     choiceBtn.setAttribute("data-attribute", "true");
-    // } 
-    // else {
-    //     choiceBtn.setAttribute("data-attribute", "false");
-    // }
+
     if (this.value !== questions[currentQuestionIndex].answer) {
         time -= 10;
         if (time < 0) {
             time=0
         }
         timeLeft.textContent = time
+    }
+    else {
+        totalPoints += 1;
+
     }
 
     currentQuestionIndex++
@@ -122,8 +118,9 @@ function nextQuestionClick () {
 
 function endQuiz () {
     clearInterval(timerID);
-    endScreen.removeAttribute("class")
-    questionContainer.setAttribute("class","hide")
+    endScreen.removeAttribute("class");
+    questionContainer.setAttribute("class","hide");
+    
 
 }
 
