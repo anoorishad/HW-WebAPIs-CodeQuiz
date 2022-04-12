@@ -1,4 +1,3 @@
-console.log("I am linked")
 
 var currentQuestionIndex = 0
 var questionContainer = document.getElementById("questionContainer");
@@ -7,7 +6,8 @@ var submitBtn = document.getElementById("submit");
 var startBtn = document.getElementById("startBtn");
 var initialsElement = document.getElementById("initials");
 var endScreen = document.getElementById("endContainer");
-var totalPoints = 0
+var scoreScreen = document.getElementById("scoreContainer");
+var finalScore = document.getElementById("finalScore");
 
 var timerID;
 var timeLeft = document.getElementById("timeLeft");
@@ -15,44 +15,44 @@ var timeLeft = document.getElementById("timeLeft");
 // array containing question objects with choices and appropriate answers
 var questions = [
     {
-        title: "Question 1",
+        title: "Which of these is NOT a programming language?",
         choices: [
-            "optionA",
-            "optionB",
-            "optionC",
-            "optionD",
+            "Java",
+            "Banana",
+            "Python",
+            "Ruby",
         ],
-        answer:  "optionB"
+        answer:  "Banana"
     },
     {
-        title: "Question 2",
+        title: "In JavaScript, what element is used to store and manipulate text usually in multiples?",
         choices: [
-            "optionA",
-            "optionB",
-            "optionC",
-            "optionD",
+            "Arrays",
+            "Function",
+            "Variables",
+            "Strings",
         ],
-        answer:  "optionB"
+        answer:  "Arrays"
     },
     {
-        title: "Question 3",
+        title: "Inside which HTML element do we put the JavaScript?",
         choices: [
-            "optionA",
-            "optionB",
-            "optionC",
-            "optionD",
+            "<javascript>",
+            "<js>",
+            "<script>",
+            "<scripting>",
         ],
-        answer:  "optionB"
+        answer:  "<script>"
     },
     {
-        title: "Question 4",
+        title: "Which of the following function of String object extracts a section of a string and returns a new string?",
         choices: [
-            "optionA",
-            "optionB",
-            "optionC",
-            "optionD",
+            "slice()",
+            "split()",
+            "replace()",
+            "osearch()",
         ],
-        answer:  "optionB"
+        answer:  "slice()"
     }
 ];
 var time = questions.length * 15
@@ -100,14 +100,8 @@ function nextQuestionClick () {
         }
         timeLeft.textContent = time
     }
-    else {
-        totalPoints += 1;
-
-    }
-
     currentQuestionIndex++
     if (currentQuestionIndex === questions.length) {
-        console.log("WE made it here");
         endQuiz();
     }
     else {
@@ -120,9 +114,56 @@ function endQuiz () {
     clearInterval(timerID);
     endScreen.removeAttribute("class");
     questionContainer.setAttribute("class","hide");
-    
+    finalScore.textContent = time
+    submitBtn.addEventListener("click" , showScores);
+
 
 }
+
+function saveScores() {
+    var initials = initialsElement.value.trim()
+    if (initials !== "") {
+        var scores = JSON.parse(window.localStorage.getItem("scores")) || [];
+
+
+        var scoreObject = {
+            score: time,
+            initials: initials
+        }
+
+        scores.push(scoreObject);
+        window.localStorage.setItem("scores", JSON.stringify(scores));
+    }
+}
+
+
+function showScores() {
+    scoreScreen.removeAttribute("class");
+    saveScores();
+
+    var highScores = JSON.parse(window.localStorage.getItem("scores")) || [];
+
+    highScores.sort(function(a,b) {
+        return b.score - a.score;
+    });
+
+    highScores.forEach(i => {
+        var listItem = document.createElement("li");
+        listItem.textContent = i.initials + ": " + i.score;
+        var list  = document.getElementById("list");
+        list.appendChild(listItem)
+        
+    });
+
+
+}
+
+function clearScores() {
+    window.localStorage.removeItem("scores")
+    window.location.reload();
+}
+document.getElementById("clearScores").onclick = clearScores;
+
 
 // starts quiz when start quiz button is pressed
 startBtn.addEventListener("click", strtQuiz);
