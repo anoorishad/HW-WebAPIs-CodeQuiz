@@ -1,7 +1,19 @@
 body {
     background: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hide {
     display: none;
+}
+
+h1 {
+    text-align: center;
+}
+
+.questionContainer {
+    display: flex;
+    flex-direction: column;
 }

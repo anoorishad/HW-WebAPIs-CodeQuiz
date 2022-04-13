@@ -1,5 +1,6 @@
 
 var currentQuestionIndex = 0
+var startScreenElement = document.getElementById("startScreen");
 var questionContainer = document.getElementById("questionContainer");
 var choicesElement = document.getElementById("choices");
 var submitBtn = document.getElementById("submit");
@@ -8,71 +9,37 @@ var initialsElement = document.getElementById("initials");
 var endScreen = document.getElementById("endContainer");
 var scoreScreen = document.getElementById("scoreContainer");
 var finalScore = document.getElementById("finalScore");
+var restartBtn = document.getElementById("restart");
+// var timeContainer = document.getElementById("timer");
 
 var timerID;
 var timeLeft = document.getElementById("timeLeft");
 
-// array containing question objects with choices and appropriate answers
-var questions = [
-    {
-        title: "Which of these is NOT a programming language?",
-        choices: [
-            "Java",
-            "Banana",
-            "Python",
-            "Ruby",
-        ],
-        answer:  "Banana"
-    },
-    {
-        title: "In JavaScript, what element is used to store and manipulate text usually in multiples?",
-        choices: [
-            "Arrays",
-            "Function",
-            "Variables",
-            "Strings",
-        ],
-        answer:  "Arrays"
-    },
-    {
-        title: "Inside which HTML element do we put the JavaScript?",
-        choices: [
-            "<javascript>",
-            "<js>",
-            "<script>",
-            "<scripting>",
-        ],
-        answer:  "<script>"
-    },
-    {
-        title: "Which of the following function of String object extracts a section of a string and returns a new string?",
-        choices: [
-            "slice()",
-            "split()",
-            "replace()",
-            "osearch()",
-        ],
-        answer:  "slice()"
-    }
-];
+
+
+
 var time = questions.length * 15
 
-function strtQuiz() {
-    var startScreenElement = document.getElementById("startScreen");
-    startScreenElement.setAttribute("class","hide");
-    questionContainer.removeAttribute("class");
-    timerID = setInterval(clock, 1000);
-    timeLeft.textContent = time
-
-    getQuestion();
-}
 function clock() {
+
     time--;
     timeLeft.textContent = time;
     if (time <= 0) {
         endQuiz();
     };
 }
+
+
+function strtQuiz() {
+
+    startScreenElement.setAttribute("class","hide");
+    questionContainer.removeAttribute("class");
+    timerID = setInterval(clock, 1000);
+    timeLeft.textContent = time;
+
+    getQuestion();
+}
+
 
 function getQuestion() {
     console.log("get question button pressed")
@@ -164,9 +131,24 @@ function clearScores() {
 }
 document.getElementById("clearScores").onclick = clearScores;
 
+function restartGame() {
+    scoreScreen.setAttribute("class", "hide");
+    endScreen.setAttribute("class", "hide" );
+    startScreenElement.removeAttribute("class");
+    currentQuestionIndex = 0
+
+
+    time = questions.length * 15;
+
+
+}
+
 
 // starts quiz when start quiz button is pressed
-startBtn.addEventListener("click", strtQuiz);
+startBtn.onclick=strtQuiz;
+restartBtn.onclick=restartGame;
+
+console.log(currentQuestionIndex);
 
 
 
